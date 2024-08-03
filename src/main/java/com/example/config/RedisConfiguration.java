@@ -36,9 +36,7 @@ public class RedisConfiguration {
 
     private void configureRedisTemplate(RedisTemplate<?, ?> redisTemplate, RedisConnectionFactory redisConnectionFactory) {
         redisTemplate.setConnectionFactory(redisConnectionFactory);
-
         FastJson2JsonRedisSerializer<Object> serializer = new FastJson2JsonRedisSerializer<>(Object.class);
-
         // key 采用 String 的序列化方式
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         // value 序列化方式采用 FastJson2JsonRedisSerializer
@@ -47,7 +45,6 @@ public class RedisConfiguration {
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
         // hash 的 value 采用 FastJson2JsonRedisSerializer
         redisTemplate.setHashValueSerializer(serializer);
-
         redisTemplate.afterPropertiesSet();
     }
 }

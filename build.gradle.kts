@@ -1,3 +1,5 @@
+import org.gradle.internal.classpath.Instrumented.systemProperty
+
 plugins {
     java
     id("org.springframework.boot") version "3.3.2"
@@ -64,7 +66,55 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     //fastjson2
     implementation("com.alibaba.fastjson2:fastjson2:2.0.51")
+    //接口参数校验模块
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 }
+
+// prod
+tasks.register("bootRunProd") {
+    group = "application"
+    description = "Runs the Spring Boot application with the prod profile"
+    doFirst {
+        tasks.bootRun.configure {
+            systemProperty("spring.profiles.active", "prod")
+        }
+    }
+    finalizedBy("bootRun")
+}
+// dev
+tasks.register("bootRunDev") {
+    group = "application"
+    description = "Runs the Spring Boot application with the dev profile"
+    doFirst {
+        tasks.bootRun.configure {
+            systemProperty("spring.profiles.active", "dev")
+        }
+    }
+    finalizedBy("bootRun")
+}
+
+tasks.register("bootJarTest") {
+    group = "build"
+    dependsOn("clean")
+    doFirst {
+        tasks.bootJar.configure {
+            systemProperty("spring.profiles.active", "dev")
+        }
+    }
+    finalizedBy("bootJar")
+}
+
+tasks.register("bootJarProd") {
+    group = "build"
+    dependsOn("clean")
+    doFirst {
+        tasks.bootJar.configure {
+            systemProperty("spring.profiles.active", "prod")
+        }
+    }
+    finalizedBy("bootJar")
+}
+
 
 tasks.withType<Test> {
     useJUnitPlatform()

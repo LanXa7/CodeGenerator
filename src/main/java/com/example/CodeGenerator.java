@@ -1,17 +1,22 @@
 package com.example;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
+import com.baomidou.mybatisplus.generator.IFill;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
 import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.baomidou.mybatisplus.generator.fill.Column;
 import com.github.yulichang.base.MPJBaseMapper;
 import com.github.yulichang.base.MPJBaseService;
 import com.github.yulichang.base.MPJBaseServiceImpl;
 
 import java.nio.file.Paths;
 import java.sql.Types;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class CodeGenerator {
     public static void main(String[] args) {
@@ -48,7 +53,7 @@ public class CodeGenerator {
                 .packageConfig(builder ->
                         builder.parent("com.example") // 设置父包名
                                 .moduleName("") // 设置父包模块名
-                                .entity("entity")
+                                .entity("entity.dto")
                                 .service("service")
                                 .serviceImpl("service.impl")
                                 .controller("controller")
@@ -67,19 +72,21 @@ public class CodeGenerator {
                                 .enableChainModel() // 启用链式编程
                                 .disableSerialVersionUID() //禁用生成 serialVersionUID
                                 .enableTableFieldAnnotation()
+                                .logicDeleteColumnName("deleted") //逻辑删除字段
+                                .addTableFills(getTableFills())
                                 .enableFileOverride() //覆盖已生成文件
                                 //controller配置
                                 .controllerBuilder()
                                 .enableRestStyle()
                                 .formatFileName("%sController")
-                                .enableFileOverride()
+                                //.enableFileOverride()
                                 //service配置
                                 .serviceBuilder()
                                 .superServiceClass(MPJBaseService.class)
                                 .superServiceImplClass(MPJBaseServiceImpl.class)
                                 .formatServiceFileName("%sService")
                                 .formatServiceImplFileName("%sServiceImp")
-                                .enableFileOverride()
+                                //.enableFileOverride()
                                 //mapper配置
                                 .mapperBuilder()
                                 .superClass(MPJBaseMapper.class)
@@ -92,4 +99,13 @@ public class CodeGenerator {
                 .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();
     }
+
+    private static List<IFill> getTableFills() {
+        return Arrays.asList(
+                new Column("operator_name", FieldFill.INSERT_UPDATE),
+                new Column("create_time", FieldFill.INSERT),
+                new Column("update_time", FieldFill.INSERT_UPDATE)
+        );
+    }
+
 }

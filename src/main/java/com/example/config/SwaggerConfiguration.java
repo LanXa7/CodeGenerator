@@ -24,11 +24,11 @@ public class SwaggerConfiguration {
         return new OpenAPI()
                 .info(new Info().title("示例项目 API 文档")
                         .description("欢迎来到本示例项目API测试文档，在这里可以快速进行接口调试")
-                        .contact(new Contact().name("作者").email("邮箱").url("https://github.com"))
+                        .contact(new Contact().name("作者").email("邮箱").url("https://github.com/LanXa7"))
                         .version("1.0")
                         .license(new License()
                                 .name("项目开源地址")
-                                .url("https://github.com/Ketuer/SpringBoot-Vue-Template-Jwt")
+                                .url("https://github.com/LanXa7/CodeGenerator")
                         )
                 )
                 // 引入外部的文档，我这里引得是 springdoc 官方文档地址，你可以不配此项

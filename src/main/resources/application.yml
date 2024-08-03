@@ -21,9 +21,13 @@ knife4j:
 spring:
   application:
     name: MpCodeGenerator
+  profiles:
+    active: dev
 
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/code_generator?serverTimezone=Asia/Shanghai
-    username: root
-    password: 123456
+  web:
+    cors:
+      origin: '*'
+      credentials: false
+      methods: '*'
+      duration: 3600
+
